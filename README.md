@@ -5,7 +5,7 @@ This is currently a prototype implementing Phase 1 - Step 1 of a larger racing g
 
 ---
 
-<video controls src="race.mov" title="Title"></video>
+<video controls src="race.mp4" title="Title"></video>
 
 ---
 
