@@ -3,6 +3,8 @@
 ## 🚧 Work in Progress
 This is currently a prototype implementing Phase 1 - Step 1 of a larger racing game project. The prototype focuses on core car physics and movement mechanics. This project is built entirely with vanilla JavaScript and was developed using AI assistance.
 
+<img src="images/sample_step1.png" alt="alt text" width="60%">
+
 ## 🎮 Current Features
 - Top-down car physics with realistic momentum
 - Front-wheel drive mechanics
