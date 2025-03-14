@@ -1,0 +1,14 @@
+{
+  "name": "racing-game",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite client/src",
+    "build": "vite build client/src",
+    "preview": "vite preview client/src"
+  },
+  "devDependencies": {
+    "vite": "^4.5.0"
+  }
+}
