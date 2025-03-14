@@ -3,15 +3,17 @@
 ## 🚧 Work in Progress
 This is currently a prototype implementing Phase 1 - Step 1 of a larger racing game project. The prototype focuses on core car physics and movement mechanics. This project is built entirely with vanilla JavaScript and was developed using AI assistance.
 
----
+## 📽️ Demo
+<!-- Method 1: Direct video element -->
+<video width="600" controls>
+  <source src="./race.mp4" type="video/mp4">
+</video>
 
-<video controls src="race.mp4" title="Title"></video>
+<!-- Method 3: Using GIF for preview -->
+![Racing Game Demo](./race.gif)
 
----
-
-<img src="images/sample_step1.png" alt="alt text" width="60%">
-
----
+## 🖼️ Screenshot
+![Racing Game Screenshot](./images/sample_step1.png)
 
 ## 🎮 Current Features
 - Top-down car physics with realistic momentum

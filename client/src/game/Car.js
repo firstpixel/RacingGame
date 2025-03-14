@@ -8,13 +8,18 @@ class Car {
         this.isBraking = false;
         this.steeringAngle = 0;
         
-        // Physics constants - adjusted for less drift
+        // Physics constants - adjusted for more momentum
         this.maxSpeed = 1000;
         this.acceleration = 2.5;
-        this.deceleration = 1.5;
-        this.friction = 0.98;
+        this.deceleration = 2.5;
+        this.friction = 0.995;       // Increased from 0.96 - Much less friction
+        this.brakingFriction = 0.95; // Separate friction for braking
         this.turnSpeed = 0.03;
-        this.driftFactor = 0.95; // Increased from 0.85 for less drift
+        this.driftFactor = 0.85;
+
+        // Add momentum constants
+        this.minSpeed = 0.1;         // Speed threshold before complete stop
+        this.coastingFriction = 0.998; // Very low friction when coasting
 
         // Visual properties
         this.wheelAngle = 0;
@@ -24,8 +29,8 @@ class Car {
         
         // Animation constants
         this.maxWheelAngle = Math.PI / 4;
-        this.maxTilt = 0.1;
-        this.maxGlow = 1.0;
+        this.maxTilt = -0.9;
+        this.maxGlow = 200.0;
         this.tireRotationSpeed = 0.1;
 
         // Additional physics constants for front-wheel drive - adjusted for more grip
@@ -36,26 +41,33 @@ class Car {
         this.angularVelocity = 0; // Current turning speed
 
         // Add steering speed reduction factor
-        this.steeringSpeedReduction = 0.7; // Reduces steering at high speeds
+        this.steeringSpeedReduction = 0.9; // Reduces steering at high speeds
         this.baseSteeringSpeed = this.turnSpeed; // Store original turn speed
 
         // Add centripetal force constants
-        this.centripetalForceFactor = 0.4;  // How much turning affects speed
-        this.speedTurnThreshold = 0.6;      // 60% of max speed
-        this.driftThreshold = 0.8;          // 80% of max speed for drift
-        this.maxDriftAngle = 0.2;           // Max drift angle in radians
-        this.driftRecoveryRate = 0.95;      // How quickly drift recovers
+        this.centripetalForceFactor = 0.8;  // Increased from 0.4 - More speed loss in turns
+        this.speedTurnThreshold = 0.4;      // Reduced from 0.6 - Start losing speed earlier in turns
+        this.driftThreshold = 0.7;          // Reduced from 0.8 - Start drifting earlier
+        this.maxDriftAngle = 0.3;           // Increased from 0.2 - More pronounced drift
+        this.driftRecoveryRate = 0.92;      // Reduced from 0.95 - Slower drift recovery
         this.driftAngle = 0;                // Current drift angle
     }
 
     update(deltaTime) {
-        // Handle acceleration
+        // Handle acceleration and momentum
         if (this.isAccelerating) {
             this.speed = Math.min(this.speed + this.acceleration, this.maxSpeed);
         } else if (this.isBraking) {
+            // Apply stronger friction when braking
             this.speed = Math.max(this.speed - this.deceleration, -this.maxSpeed * 0.5);
+            this.speed *= this.brakingFriction;
         } else {
-            this.speed *= this.friction;
+            // Coasting - apply very low friction
+            if (Math.abs(this.speed) > this.minSpeed) {
+                this.speed *= this.coastingFriction;
+            } else {
+                this.speed = 0; // Stop completely below threshold
+            }
         }
 
         // Calculate speed reduction from turning (centripetal force)
@@ -79,7 +91,6 @@ class Car {
 
         // Adjust steering speed based on current speed
         const steeringReduction = 1 - (speedFactor * this.steeringSpeedReduction);
-        const currentTurnSpeed = this.baseSteeringSpeed * steeringReduction;
 
         // Calculate front wheel position and forces
         const frontWheel = {
@@ -113,7 +124,7 @@ class Car {
         const targetTilt = -this.steeringAngle * this.maxTilt * (this.speed / this.maxSpeed);
         this.tilt += (targetTilt - this.tilt) * 0.1;
 
-        const targetGlow = this.isAccelerating ? this.maxGlow : 0;
+        const targetGlow = this.isAccelerating * 10 ? this.maxGlow : 0;
         this.accelerationGlow += (targetGlow - this.accelerationGlow) * 0.2;
     }
 
@@ -154,6 +165,7 @@ class Car {
         if (this.accelerationGlow > 0) {
             ctx.save();
             ctx.globalAlpha = this.accelerationGlow * 0.5;
+            ctx.blur =  this.accelerationGlow * 0.5;
             ctx.fillStyle = '#ffd700'; // Golden glow
             ctx.beginPath();
             ctx.arc(0, 0, 30, 0, Math.PI * 2);
