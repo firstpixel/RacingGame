@@ -1,7 +1,7 @@
 class VisualEffects {
     constructor() {
         this.tireMarks = [];
-        this.maxTireMarks = 100;
+        this.maxTireMarks = 3000;
     }
 
     createTireMark(car) {
@@ -11,7 +11,7 @@ class VisualEffects {
                 const mark = {
                     x: car.position.x + Math.cos(car.angle) * offset,
                     y: car.position.y + Math.sin(car.angle) * offset,
-                    opacity: 0.8
+                    opacity: 0.1
                 };
                 this.tireMarks.push(mark);
             });
@@ -25,7 +25,7 @@ class VisualEffects {
     updateEffects(deltaTime) {
         // Fade tire marks
         this.tireMarks.forEach(mark => {
-            mark.opacity = Math.max(0, mark.opacity - deltaTime * 0.5);
+            mark.opacity = Math.max(0, mark.opacity - deltaTime * 0.005);
         });
         this.tireMarks = this.tireMarks.filter(mark => mark.opacity > 0);
     }

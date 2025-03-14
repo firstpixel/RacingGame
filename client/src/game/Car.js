@@ -9,9 +9,9 @@ class Car {
         this.steeringAngle = 0;
         
         // Physics constants - adjusted for less drift
-        this.maxSpeed = 200;
-        this.acceleration = 0.5;
-        this.deceleration = 0.3;
+        this.maxSpeed = 1000;
+        this.acceleration = 2.5;
+        this.deceleration = 1.5;
         this.friction = 0.98;
         this.turnSpeed = 0.03;
         this.driftFactor = 0.95; // Increased from 0.85 for less drift
@@ -34,6 +34,18 @@ class Car {
         this.rearGrip = 0.9; // Increased from 0.8
         this.inertia = 0.3; // Reduced from 0.5 for less sliding
         this.angularVelocity = 0; // Current turning speed
+
+        // Add steering speed reduction factor
+        this.steeringSpeedReduction = 0.7; // Reduces steering at high speeds
+        this.baseSteeringSpeed = this.turnSpeed; // Store original turn speed
+
+        // Add centripetal force constants
+        this.centripetalForceFactor = 0.4;  // How much turning affects speed
+        this.speedTurnThreshold = 0.6;      // 60% of max speed
+        this.driftThreshold = 0.8;          // 80% of max speed for drift
+        this.maxDriftAngle = 0.2;           // Max drift angle in radians
+        this.driftRecoveryRate = 0.95;      // How quickly drift recovers
+        this.driftAngle = 0;                // Current drift angle
     }
 
     update(deltaTime) {
@@ -46,28 +58,52 @@ class Car {
             this.speed *= this.friction;
         }
 
+        // Calculate speed reduction from turning (centripetal force)
+        const speedFactor = Math.abs(this.speed) / this.maxSpeed;
+        if (speedFactor > this.speedTurnThreshold && Math.abs(this.steeringAngle) > 0) {
+            const turnIntensity = Math.abs(this.steeringAngle);
+            const speedReduction = turnIntensity * this.centripetalForceFactor * 
+                                 (speedFactor - this.speedTurnThreshold) * this.speed;
+            this.speed = Math.max(0, this.speed - speedReduction * deltaTime);
+        }
+
+        // Calculate drift effect at high speeds
+        if (speedFactor > this.driftThreshold && Math.abs(this.steeringAngle) > 0) {
+            const driftIntensity = (speedFactor - this.driftThreshold) * 
+                                 Math.abs(this.steeringAngle);
+            const targetDrift = this.maxDriftAngle * driftIntensity * Math.sign(this.steeringAngle);
+            this.driftAngle += (targetDrift - this.driftAngle) * 0.1;
+        } else {
+            this.driftAngle *= this.driftRecoveryRate;
+        }
+
+        // Adjust steering speed based on current speed
+        const steeringReduction = 1 - (speedFactor * this.steeringSpeedReduction);
+        const currentTurnSpeed = this.baseSteeringSpeed * steeringReduction;
+
         // Calculate front wheel position and forces
         const frontWheel = {
             x: Math.sin(this.angle + this.wheelAngle) * this.wheelbase * 0.5,
             y: -Math.cos(this.angle + this.wheelAngle) * this.wheelbase * 0.5
         };
 
-        // Apply forces based on wheel angle and speed
-        const turnForce = this.speed * Math.sin(this.wheelAngle) * this.frontGrip;
+        // Apply forces based on wheel angle and adjusted speed
+        const turnForce = this.speed * Math.sin(this.wheelAngle) * this.frontGrip * steeringReduction;
         this.angularVelocity += (turnForce / this.wheelbase) * this.inertia;
         this.angularVelocity *= 0.90;
 
-        // Update angle based on angular velocity
-        this.angle += this.angularVelocity * deltaTime;
+        // Update angle including drift
+        this.angle += (this.angularVelocity + this.driftAngle) * deltaTime;
 
-        // Update wheel turning animation
-        const targetWheelAngle = this.steeringAngle * this.maxWheelAngle;
+        // Update wheel turning animation with speed-based reduction
+        const targetWheelAngle = this.steeringAngle * this.maxWheelAngle * steeringReduction;
         this.wheelAngle += (targetWheelAngle - this.wheelAngle) * 0.2;
 
         // Calculate velocity based on car's angle and speed
+        const totalAngle = this.angle + this.driftAngle;
         const driftEffect = Math.abs(this.angularVelocity) > 1.0 ? this.driftFactor : 1;
-        this.velocity.x = Math.sin(this.angle) * this.speed * driftEffect;  // Removed negative
-        this.velocity.y = -Math.cos(this.angle) * this.speed * driftEffect; // Keep negative for correct direction
+        this.velocity.x = Math.sin(totalAngle) * this.speed * driftEffect;  // Removed negative
+        this.velocity.y = -Math.cos(totalAngle) * this.speed * driftEffect; // Keep negative for correct direction
         
         // Update position
         this.position.x += this.velocity.x * deltaTime;
@@ -132,7 +168,6 @@ class Car {
         ctx.save();
         ctx.translate(x, y);
         ctx.rotate(steeringAngle);
-        // No more tire rotation, just draw the wheel
         ctx.fillStyle = '#333333'; // Dark grey wheels
         ctx.fillRect(-5, -8, 10, 16);
         ctx.restore();
