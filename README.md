@@ -8,9 +8,7 @@ This is currently a prototype implementing Phase 1 - Step 1 of a larger racing g
 <video width="600" controls>
   <source src="./race.mp4" type="video/mp4">
 </video>
-
-<!-- Method 3: Using GIF for preview -->
-![Racing Game Demo](./race.gif)
+[Watch Race Video](https://github.com/firstpixel/RacingGame/raw/main/race.mp4)
 
 ### Playable Demo - Step 1 (WIP)
 https://racing-game-omega.vercel.app
