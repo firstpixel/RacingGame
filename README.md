@@ -12,6 +12,9 @@ This is currently a prototype implementing Phase 1 - Step 1 of a larger racing g
 <!-- Method 3: Using GIF for preview -->
 ![Racing Game Demo](./race.gif)
 
+### Playable Demo - Step 1 (WIP)
+https://racing-game-omega.vercel.app
+
 ## 🖼️ Screenshot
 ![Racing Game Screenshot](./images/sample_step1.png)
 
