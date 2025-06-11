@@ -30,7 +30,7 @@ class Car {
         // Animation constants
         this.maxWheelAngle = Math.PI / 4;
         this.maxTilt = -0.9;
-        this.maxGlow = 200.0;
+        this.maxGlow = 1.0;
         this.tireRotationSpeed = 0.1;
 
         // Additional physics constants for front-wheel drive - adjusted for more grip
@@ -124,8 +124,8 @@ class Car {
         const targetTilt = -this.steeringAngle * this.maxTilt * (this.speed / this.maxSpeed);
         this.tilt += (targetTilt - this.tilt) * 0.1;
 
-        const targetGlow = this.isAccelerating * 10 ? this.maxGlow : 0;
-        this.accelerationGlow += (targetGlow - this.accelerationGlow) * 0.2;
+        const targetGlow = this.isAccelerating * 0.1 ? this.maxGlow : 0;
+        this.accelerationGlow += (targetGlow - this.accelerationGlow) * 0.1;
     }
 
     handleInput(keys) {
