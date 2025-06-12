@@ -55,35 +55,35 @@ Build a fully functional single-player prototype with working car physics, UI, a
 
 #### **1. Car Structure & Visuals**
 - The car model will resemble a **Formula 1 car**.
-- **Front wheels should turn** when steering to enhance realism.
-- **Tire rotation animation** should reflect speed changes (faster = blurred effect).
-- Add a **light shining effect** in the middle of the tire when accelerating.
-- Apply **subtle tilt animation** to simulate weight shift during turns.
+- ✅ **Front wheels now turn** when steering to enhance realism.
+- ✅ **Tire rotation animation** reflects speed changes (faster = blurred effect).
+- ✅ Added a **light shining effect** in the middle of the tire when accelerating.
+- ✅ **Subtle tilt animation** simulates weight shift during turns.
 
 #### **2. Car Movement & Controls**
-- Implement **basic movement mechanics** using arrow keys.
-- **Acceleration and braking** must follow smooth curves (gradual increase/decrease).
-- The car should have **momentum** (won’t stop instantly when releasing keys).
-- Implement **turning behavior** with speed-dependent rotation.
-- Add **drift mechanics** where grip reduces slightly on sharp turns.
+- ✅ Implement **basic movement mechanics** using arrow keys.
+- ✅ **Acceleration and braking** follow smooth curves (gradual increase/decrease).
+- ✅ The car now has **momentum** (won’t stop instantly when releasing keys).
+- ✅ Implemented **turning behavior** with speed-dependent rotation.
+- ✅ Added **drift mechanics** where grip reduces slightly on sharp turns.
 
 #### **3. Camera & World Interaction**
-- The **main game map rotates** so the player's car is always moving **upward**.
-- The **camera follows the player** while keeping the car slightly toward the bottom of the screen.
-- Leave **extra space below the car** to allow visibility when reversing.
-- The camera should have **slight lateral movement and rotation smoothing** to enhance turning sensation.
+- ✅ The **main game map rotates** so the player's car is always moving **upward**.
+- ✅ The **camera follows the player** while keeping the car slightly toward the bottom of the screen.
+- ✅ Leave **extra space below the car** to allow visibility when reversing.
+- ✅ The camera has **slight lateral movement and rotation smoothing** to enhance turning sensation.
 
 #### **4. Bounding Box Collision Detection**
-- Use **bounding box collision detection** to keep the car inside track limits.
-- Implement **collision reaction mechanics** (reduce speed on impact, slight bounce effect).
-- Prevent the car from cutting corners by detecting **off-track movement**.
+- ✅ Use **bounding box collision detection** to keep the car inside track limits.
+- ✅ Implement **collision reaction mechanics** (reduce speed on impact, slight bounce effect).
+- ✅ Prevent the car from cutting corners by detecting **off-track movement**.
 - Prepare **support for dynamic track elements** (e.g., walls, barriers).
 
 #### **5. Environmental Effects**
-- Introduce **motion blur at high speeds**.
-- Implement **random rain effects** that reduce grip and increase drift behavior.
-- Adjust **physics in wet conditions** (longer braking distances, reduced acceleration).
-- Generate **tire marks on sharp turns**, which fade over time for realism.
+- ✅ Introduce **motion blur at high speeds**.
+- ✅ Implement **random rain effects** that reduce grip and increase drift behavior.
+- ✅ Adjust **physics in wet conditions** (longer braking distances, reduced acceleration).
+- ✅ Generate **tire marks on sharp turns**, which fade over time for realism.
 
 ---
 
@@ -103,8 +103,8 @@ Build a fully functional single-player prototype with working car physics, UI, a
 #### **3. Collision Detection Implementation**
 - Parse **SVG path data** to define collision areas.
 - Use **bounding box detection** to determine if a car has collided with the track boundaries.
-- Prevent **off-track movement** by detecting **when a car leaves the racing area**.
-- Implement a **small slowdown effect** when touching track edges instead of an abrupt stop.
+- ✅ Prevent **off-track movement** by detecting **when a car leaves the racing area**.
+- ✅ Implement a **small slowdown effect** when touching track edges instead of an abrupt stop.
 
 #### **4. Lap Counting & Finish Line Detection**
 - Define **checkpoint markers** using SVG reference points.

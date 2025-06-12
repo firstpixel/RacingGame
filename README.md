@@ -24,7 +24,11 @@ https://racing-game-omega.vercel.app
   - Wheel steering animation
   - Acceleration glow
   - Tire marks during sharp turns
+  - Wheel rotation with glowing hubs
+  - Motion blur at high speeds
+  - Random rain effects with reduced grip
 - Dynamic camera that follows the car
+- Bounding box collision with edge slowdown
 - Debug UI showing speed, position, and angle
 
 ## 🎯 Development Roadmap
@@ -45,7 +49,6 @@ https://racing-game-omega.vercel.app
 
 ### Single-Player
 - Hand-drawn SVG tracks
-- Bounding box collision detection
 - Lap counting & finish line detection
 - AI opponents using neural networks
 - Environmental effects (rain, motion blur)
@@ -115,7 +118,7 @@ Currently implementing Phase 1 - Step 1:
 - ✅ Front-wheel drive mechanics
 - ✅ Camera system
 - ✅ Visual effects
-- ⏳ Track collision
+- ✅ Track collision
 - ⏳ AI implementation
 
 ## 🤖 AI Development
