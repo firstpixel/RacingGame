@@ -25,12 +25,10 @@ class Car {
         this.wheelAngle = 0;
         this.tireRotation = 0;
         this.tilt = 0;
-        this.accelerationGlow = 0;
         
         // Animation constants
         this.maxWheelAngle = Math.PI / 4;
         this.maxTilt = -0.9;
-        this.maxGlow = 1.0;
         this.tireRotationSpeed = 0.1;
 
         // Additional physics constants for front-wheel drive - adjusted for more grip
@@ -132,12 +130,10 @@ class Car {
         // Update tire rotation based on speed
         this.tireRotation += Math.abs(this.speed) * this.tireRotationSpeed * deltaTime;
 
-        // Update tilt and glow effects
+        // Update tilt effect
         const targetTilt = -this.steeringAngle * this.maxTilt * (this.speed / this.maxSpeed);
         this.tilt += (targetTilt - this.tilt) * 0.1;
 
-        const targetGlow = this.isAccelerating * 0.1 ? this.maxGlow : 0;
-        this.accelerationGlow += (targetGlow - this.accelerationGlow) * 0.1;
     }
 
     handleInput(keys) {
@@ -173,18 +169,6 @@ class Car {
         this.drawWheel(ctx, -15, 30, 0);
         this.drawWheel(ctx, 15, 30, 0);
 
-        // Draw acceleration glow
-        if (this.accelerationGlow > 0) {
-            ctx.save();
-            ctx.globalAlpha = this.accelerationGlow * 0.5;
-            ctx.blur =  this.accelerationGlow * 0.5;
-            ctx.fillStyle = '#ffd700'; // Golden glow
-            ctx.beginPath();
-            ctx.arc(0, 0, 30, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
-        }
-
         ctx.restore();
     }
 
@@ -208,13 +192,7 @@ class Car {
         ctx.stroke();
         ctx.restore();
 
-        // Wheel glow when accelerating
-        if (this.isAccelerating) {
-            ctx.fillStyle = 'rgba(255, 255, 150, 0.5)';
-            ctx.beginPath();
-            ctx.arc(0, 0, 6, 0, Math.PI * 2);
-            ctx.fill();
-        }
+
 
         ctx.restore();
     }
