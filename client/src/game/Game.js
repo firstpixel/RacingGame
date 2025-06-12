@@ -32,7 +32,7 @@ class Game {
             this.car.position = { x: 0, y: -875 };
             this.car.angle = Math.PI; // face downward along first straight
         } else if (trackName === 'interlagos') {
-            this.car.position = { x: -100, y: -400 };
+            this.car.position = { x: -200, y: -800 };
             this.car.angle = Math.PI; // roughly follow track direction
         } else {
             this.car.position = { x: 0, y: 0 };

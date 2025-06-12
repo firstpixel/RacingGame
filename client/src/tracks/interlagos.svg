@@ -1,6 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-600 -500 1200 1000">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1200 -1000 2400 2000">
   <!-- Simplified outer and inner paths approximating the Interlagos layout -->
-  <path id="outer" d="M 500 -200 Q 400 -450 100 -450 Q -150 -450 -350 -300 Q -500 -150 -450 50 Q -420 150 -330 230 Q -240 310 -120 340 Q 0 370 120 340 Q 250 300 360 200 Q 470 100 500 -50 Q 530 -150 500 -200 Z" fill="none" stroke="black" stroke-width="5" />
-  <path id="inner" d="M 300 -150 Q 240 -350 60 -350 Q -120 -350 -260 -240 Q -360 -150 -330 -20 Q -300 60 -230 120 Q -160 180 -80 210 Q 0 240 80 210 Q 170 180 240 120 Q 310 60 330 -30 Q 340 -100 300 -150 Z" fill="none" stroke="black" stroke-width="5" />
-  <line id="finish" x1="-100" y1="-450" x2="-100" y2="-350" stroke="black" stroke-width="5" />
+  <path id="outer" d="M 1000 -400 Q 800 -900 200 -900 Q -300 -900 -700 -600 Q -1000 -300 -900 100 Q -840 300 -660 460 Q -480 620 -240 680 Q 0 740 240 680 Q 500 600 720 400 Q 940 200 1000 -100 Q 1060 -300 1000 -400 Z" fill="none" stroke="black" stroke-width="5"/>
+  <path id="inner" d="M 600 -300 Q 480 -700 120 -700 Q -240 -700 -520 -480 Q -720 -300 -660 -40 Q -600 120 -460 240 Q -320 360 -160 420 Q 0 480 160 420 Q 340 360 480 240 Q 620 120 660 -60 Q 680 -200 600 -300 Z" fill="none" stroke="black" stroke-width="5"/>
+  <line id="finish" x1="-200" y1="-900" x2="-200" y2="-700" stroke="black" stroke-width="5"/>
+  <rect id="start" x="-210" y="-900" width="20" height="200" fill="none" />
 </svg>
