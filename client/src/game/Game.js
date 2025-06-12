@@ -12,7 +12,13 @@ class Game {
         this.effects = new VisualEffects();
         this.keys = {};
         this.lastTime = 0;
-        
+
+        // Rain state
+        this.isRaining = false;
+        this.rainTimer = 0;
+        this.nextRainTime = 5 + Math.random() * 10;
+        this.rainDuration = 0;
+
         this.setupEventListeners();
     }
 
@@ -28,8 +34,11 @@ class Game {
         this.car.handleInput(this.keys);
         this.car.update(deltaTime);
         this.camera.follow(this.car);
+        this.checkTrackBounds();
+        this.handleRain(deltaTime);
         this.effects.createTireMark(this.car);
-        this.effects.updateEffects(deltaTime);
+        this.effects.createMotionBlur(this.car);
+        this.effects.updateEffects(deltaTime, this.car);
     }
 
     render() {
@@ -73,6 +82,52 @@ class Game {
 
     start() {
         requestAnimationFrame((ts) => this.gameLoop(ts));
+    }
+
+    checkTrackBounds() {
+        const bounds = { left: -200, right: 200, top: -1000, bottom: 1000 };
+        const halfWidth = 20;
+        const halfHeight = 40;
+        let collided = false;
+
+        if (this.car.position.x - halfWidth < bounds.left) {
+            this.car.position.x = bounds.left + halfWidth;
+            collided = true;
+        }
+        if (this.car.position.x + halfWidth > bounds.right) {
+            this.car.position.x = bounds.right - halfWidth;
+            collided = true;
+        }
+        if (this.car.position.y - halfHeight < bounds.top) {
+            this.car.position.y = bounds.top + halfHeight;
+            collided = true;
+        }
+        if (this.car.position.y + halfHeight > bounds.bottom) {
+            this.car.position.y = bounds.bottom - halfHeight;
+            collided = true;
+        }
+
+        if (collided) {
+            this.car.speed *= -0.3;
+        }
+    }
+
+    handleRain(deltaTime) {
+        this.rainTimer += deltaTime;
+
+        if (!this.isRaining && this.rainTimer >= this.nextRainTime) {
+            this.isRaining = true;
+            this.rainDuration = 5 + Math.random() * 5;
+            this.rainTimer = 0;
+            this.car.isWet = true;
+            this.effects.setRaining(true);
+        } else if (this.isRaining && this.rainTimer >= this.rainDuration) {
+            this.isRaining = false;
+            this.nextRainTime = 10 + Math.random() * 10;
+            this.rainTimer = 0;
+            this.car.isWet = false;
+            this.effects.setRaining(false);
+        }
     }
 }
 

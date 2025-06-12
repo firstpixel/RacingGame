@@ -51,20 +51,27 @@ class Car {
         this.maxDriftAngle = 0.3;           // Increased from 0.2 - More pronounced drift
         this.driftRecoveryRate = 0.92;      // Reduced from 0.95 - Slower drift recovery
         this.driftAngle = 0;                // Current drift angle
+
+        this.isWet = false;
     }
 
     update(deltaTime) {
+        const accel = this.isWet ? this.acceleration * 0.7 : this.acceleration;
+        const decel = this.isWet ? this.deceleration * 0.9 : this.deceleration;
+        const brakeFriction = this.isWet ? this.brakingFriction * 0.9 : this.brakingFriction;
+        const coastFriction = this.isWet ? this.coastingFriction * 0.995 : this.coastingFriction;
+
         // Handle acceleration and momentum
         if (this.isAccelerating) {
-            this.speed = Math.min(this.speed + this.acceleration, this.maxSpeed);
+            this.speed = Math.min(this.speed + accel, this.maxSpeed);
         } else if (this.isBraking) {
             // Apply stronger friction when braking
-            this.speed = Math.max(this.speed - this.deceleration, -this.maxSpeed * 0.5);
-            this.speed *= this.brakingFriction;
+            this.speed = Math.max(this.speed - decel, -this.maxSpeed * 0.5);
+            this.speed *= brakeFriction;
         } else {
             // Coasting - apply very low friction
             if (Math.abs(this.speed) > this.minSpeed) {
-                this.speed *= this.coastingFriction;
+                this.speed *= coastFriction;
             } else {
                 this.speed = 0; // Stop completely below threshold
             }
@@ -91,6 +98,7 @@ class Car {
 
         // Adjust steering speed based on current speed
         const steeringReduction = 1 - (speedFactor * this.steeringSpeedReduction);
+        const gripMult = this.isWet ? 0.8 : 1;
 
         // Calculate front wheel position and forces
         const frontWheel = {
@@ -99,7 +107,7 @@ class Car {
         };
 
         // Apply forces based on wheel angle and adjusted speed
-        const turnForce = this.speed * Math.sin(this.wheelAngle) * this.frontGrip * steeringReduction;
+        const turnForce = this.speed * Math.sin(this.wheelAngle) * this.frontGrip * gripMult * steeringReduction;
         this.angularVelocity += (turnForce / this.wheelbase) * this.inertia;
         this.angularVelocity *= 0.90;
 
@@ -112,13 +120,17 @@ class Car {
 
         // Calculate velocity based on car's angle and speed
         const totalAngle = this.angle + this.driftAngle;
-        const driftEffect = Math.abs(this.angularVelocity) > 1.0 ? this.driftFactor : 1;
+        const driftFact = this.isWet ? this.driftFactor * 1.2 : this.driftFactor;
+        const driftEffect = Math.abs(this.angularVelocity) > 1.0 ? driftFact : 1;
         this.velocity.x = Math.sin(totalAngle) * this.speed * driftEffect;  // Removed negative
         this.velocity.y = -Math.cos(totalAngle) * this.speed * driftEffect; // Keep negative for correct direction
-        
+
         // Update position
         this.position.x += this.velocity.x * deltaTime;
         this.position.y += this.velocity.y * deltaTime;
+
+        // Update tire rotation based on speed
+        this.tireRotation += Math.abs(this.speed) * this.tireRotationSpeed * deltaTime;
 
         // Update tilt and glow effects
         const targetTilt = -this.steeringAngle * this.maxTilt * (this.speed / this.maxSpeed);
@@ -182,6 +194,28 @@ class Car {
         ctx.rotate(steeringAngle);
         ctx.fillStyle = '#333333'; // Dark grey wheels
         ctx.fillRect(-5, -8, 10, 16);
+
+        // Draw simple tread lines to show rotation
+        ctx.save();
+        ctx.rotate(this.tireRotation);
+        ctx.strokeStyle = '#111';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, -8);
+        ctx.lineTo(0, 8);
+        ctx.moveTo(-4, 0);
+        ctx.lineTo(4, 0);
+        ctx.stroke();
+        ctx.restore();
+
+        // Wheel glow when accelerating
+        if (this.isAccelerating) {
+            ctx.fillStyle = 'rgba(255, 255, 150, 0.5)';
+            ctx.beginPath();
+            ctx.arc(0, 0, 6, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
         ctx.restore();
     }
 }
