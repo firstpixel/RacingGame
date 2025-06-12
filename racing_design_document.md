@@ -91,26 +91,26 @@ Build a fully functional single-player prototype with working car physics, UI, a
 🔹 **Team:** Game World Developers  
 
 #### **1. Track System Setup**
-- Load **pre-designed SVG race tracks** dynamically based on the selected track.
-- Store **track files separately**, ensuring they can be switched out without modifying core code.
-- Optimize **SVG parsing** to avoid performance issues.
+- ✅ Load **pre-designed SVG race tracks** dynamically based on the selected track.
+- ✅ Store **track files separately**, ensuring they can be switched out without modifying core code.
+- ✅ Optimize **SVG parsing** to avoid performance issues.
 
 #### **2. Track Rendering & Display**
-- Render the **track as a background** while keeping it interactive.
-- Ensure the **track scales properly** to different screen sizes.
-- Implement **track rotation mechanics**, ensuring it aligns with the player’s movement direction.
+- ✅ Render the **track as a background** while keeping it interactive.
+- ✅ Ensure the **track scales properly** to different screen sizes.
+- ✅ Implement **track rotation mechanics**, ensuring it aligns with the player’s movement direction.
 
 #### **3. Collision Detection Implementation**
-- Parse **SVG path data** to define collision areas.
-- Use **bounding box detection** to determine if a car has collided with the track boundaries.
+- ✅ Parse **SVG path data** to define collision areas.
+- ✅ Use **bounding box detection** to determine if a car has collided with the track boundaries.
 - ✅ Prevent **off-track movement** by detecting **when a car leaves the racing area**.
 - ✅ Implement a **small slowdown effect** when touching track edges instead of an abrupt stop.
 
 #### **4. Lap Counting & Finish Line Detection**
-- Define **checkpoint markers** using SVG reference points.
-- Implement a **finish line detection system** that tracks laps.
-- Ensure **laps are only counted when fully crossed**, preventing exploits.
-- Display the **current lap count & total laps remaining** in the UI.
+- ✅ Define **checkpoint markers** using SVG reference points.
+- ✅ Implement a **finish line detection system** that tracks laps.
+- ✅ Ensure **laps are only counted when fully crossed**, preventing exploits.
+- ✅ Display the **current lap count & total laps remaining** in the UI.
 
 #### **5. Advanced Track Features**
 - Prepare **support for different track surfaces** (wet/dry conditions impact grip).
