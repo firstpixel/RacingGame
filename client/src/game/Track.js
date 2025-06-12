@@ -60,7 +60,7 @@ class Track {
         const lineX = -100;
         if (this.name === 'oval') {
             return prev.x < 0 && curr.x >= 0 &&
-                   curr.y <= -150 && curr.y >= -200;
+                   curr.y <= -750 && curr.y >= -1000;
         }
         if (this.name === 'interlagos') {
             if ((prev.x < lineX && curr.x >= lineX) || (prev.x > lineX && curr.x <= lineX)) {
