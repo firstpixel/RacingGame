@@ -18,14 +18,24 @@ function updateUI(game) {
     document.getElementById('totalLaps').textContent = game.totalLaps;
 }
 
-window.addEventListener('load', () => {
+let game = null;
+
+function startGame(track) {
     const canvas = document.getElementById('gameCanvas');
+    if (!game) {
+        game = new Game(canvas, track);
+        game.start();
+        setInterval(() => updateUI(game), 1000/60);
+    }
+    document.getElementById('trackSelect').style.display = 'none';
+}
+
+window.addEventListener('load', () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    const game = new Game(canvas, 'oval');
-    game.start();
-
-    // Update UI 60 times per second
-    setInterval(() => updateUI(game), 1000/60);
+    document.getElementById('selectOval')
+        .addEventListener('click', () => startGame('oval'));
+    document.getElementById('selectInterlagos')
+        .addEventListener('click', () => startGame('interlagos'));
 });
