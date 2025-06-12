@@ -139,6 +139,10 @@ This project is being developed with AI assistance, using:
 MIT License - Feel free to use this code for learning purposes.
 
 ## 🤝 Contributing
+
+## 🚀 Deploying to Vercel
+To deploy the game on Vercel, ensure that a `vercel.json` file exists with the build command `npm run build` and `client/src/dist` as the output directory. This repository already includes the configuration, so a GitHub import on Vercel will automatically produce a working build.
+
 As this is a prototype in active development, please open an issue first to discuss what you would like to change.
 
 ## 🙏 Acknowledgments
