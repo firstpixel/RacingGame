@@ -31,12 +31,33 @@
             padding: 10px;
             border-radius: 5px;
         }
+        #trackSelect {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        #trackSelect button {
+            margin: 5px;
+            padding: 10px 20px;
+        }
     </style>
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
+    <div id="trackSelect">
+        <h2>Select Track</h2>
+        <button id="selectOval">Oval</button>
+        <button id="selectInterlagos">Interlagos</button>
+    </div>
     <div id="ui">
         <div>Speed: <span id="speed">0</span> km/h</div>
+        <div>Lap: <span id="lapCount">0</span>/<span id="totalLaps">0</span></div>
         <div>Use Arrow Keys to drive</div>
     </div>
     <div id="debug">

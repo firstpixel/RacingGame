@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-600 -500 1200 1000">
+  <!-- Simplified outer and inner paths approximating the Interlagos layout -->
+  <path id="outer" d="M 500 -200 Q 400 -450 100 -450 Q -150 -450 -350 -300 Q -500 -150 -450 50 Q -420 150 -330 230 Q -240 310 -120 340 Q 0 370 120 340 Q 250 300 360 200 Q 470 100 500 -50 Q 530 -150 500 -200 Z" fill="none" stroke="black" stroke-width="5" />
+  <path id="inner" d="M 300 -150 Q 240 -350 60 -350 Q -120 -350 -260 -240 Q -360 -150 -330 -20 Q -300 60 -230 120 Q -160 180 -80 210 Q 0 240 80 210 Q 170 180 240 120 Q 310 60 330 -30 Q 340 -100 300 -150 Z" fill="none" stroke="black" stroke-width="5" />
+  <line id="finish" x1="-100" y1="-450" x2="-100" y2="-350" stroke="black" stroke-width="5" />
+</svg>

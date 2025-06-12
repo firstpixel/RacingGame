@@ -1,17 +1,22 @@
 import Car from './Car';
 import Camera from './Camera';
 import VisualEffects from '../effects/VisualEffects';
+import Track from './Track';
 
 class Game {
-    constructor(canvas) {
+    constructor(canvas, trackName = 'oval') {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.car = new Car();
-        this.car.position = { x: 0, y: 0 }; // Start at center
+        this.setStartPosition(trackName);
         this.camera = new Camera(canvas);
         this.effects = new VisualEffects();
+        this.track = new Track(trackName);
         this.keys = {};
         this.lastTime = 0;
+        this.prevCarPos = { x: 0, y: 0 };
+        this.lapCount = 0;
+        this.totalLaps = 3;
 
         // Rain state
         this.isRaining = false;
@@ -20,6 +25,18 @@ class Game {
         this.rainDuration = 0;
 
         this.setupEventListeners();
+    }
+
+    setStartPosition(trackName) {
+        if (trackName === 'oval') {
+            this.car.position = { x: 0, y: -875 };
+            this.car.angle = Math.PI; // face downward along first straight
+        } else if (trackName === 'interlagos') {
+            this.car.position = { x: -100, y: -400 };
+            this.car.angle = Math.PI; // roughly follow track direction
+        } else {
+            this.car.position = { x: 0, y: 0 };
+        }
     }
 
     setupEventListeners() {
@@ -31,10 +48,14 @@ class Game {
         const deltaTime = (timestamp - this.lastTime) / 1000;
         this.lastTime = timestamp;
 
+        this.prevCarPos = { x: this.car.position.x, y: this.car.position.y };
         this.car.handleInput(this.keys);
         this.car.update(deltaTime);
         this.camera.follow(this.car);
         this.checkTrackBounds();
+        if (this.track.crossedFinish(this.prevCarPos, this.car.position)) {
+            this.lapCount += 1;
+        }
         this.handleRain(deltaTime);
         this.effects.createTireMark(this.car);
         this.effects.createMotionBlur(this.car);
@@ -49,24 +70,10 @@ class Game {
         this.ctx.save();
         this.camera.transform(this.ctx);
         
-        // Draw track with grass and asphalt
-        // Grass background
-        this.ctx.fillStyle = '#2d572c';
-        this.ctx.fillRect(-1000, -1000, 2000, 2000);
-        
-        // Track/asphalt
-        this.ctx.fillStyle = '#666666';
-        this.ctx.fillRect(-200, -1000, 400, 2000);
-        
-        // Track markings (white lines)
-        this.ctx.strokeStyle = '#ffffff';
-        this.ctx.lineWidth = 5;
-        this.ctx.beginPath();
-        this.ctx.moveTo(-200, -1000);
-        this.ctx.lineTo(-200, 1000);
-        this.ctx.moveTo(200, -1000);
-        this.ctx.lineTo(200, 1000);
-        this.ctx.stroke();
+        // Draw loaded track
+        if (this.track.outerPath) {
+            this.track.render(this.ctx);
+        }
         
         this.effects.render(this.ctx);
         this.car.render(this.ctx);
@@ -80,35 +87,16 @@ class Game {
         requestAnimationFrame((ts) => this.gameLoop(ts));
     }
 
-    start() {
+    async start() {
+        await this.track.load();
         requestAnimationFrame((ts) => this.gameLoop(ts));
     }
 
     checkTrackBounds() {
-        const bounds = { left: -200, right: 200, top: -1000, bottom: 1000 };
-        const halfWidth = 20;
-        const halfHeight = 40;
-        let collided = false;
-
-        if (this.car.position.x - halfWidth < bounds.left) {
-            this.car.position.x = bounds.left + halfWidth;
-            collided = true;
-        }
-        if (this.car.position.x + halfWidth > bounds.right) {
-            this.car.position.x = bounds.right - halfWidth;
-            collided = true;
-        }
-        if (this.car.position.y - halfHeight < bounds.top) {
-            this.car.position.y = bounds.top + halfHeight;
-            collided = true;
-        }
-        if (this.car.position.y + halfHeight > bounds.bottom) {
-            this.car.position.y = bounds.bottom - halfHeight;
-            collided = true;
-        }
-
-        if (collided) {
-            this.car.speed *= -0.3;
+        if (!this.track.isPointOnTrack(this.ctx, this.car.position.x, this.car.position.y)) {
+            this.car.position.x = this.prevCarPos.x;
+            this.car.position.y = this.prevCarPos.y;
+            this.car.speed *= 0.5;
         }
     }
 
